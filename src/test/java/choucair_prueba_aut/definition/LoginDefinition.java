@@ -1,13 +1,15 @@
 package choucair_prueba_aut.definition;
 
+import choucair_prueba_aut.model.conexion_base_datos;
 import choucair_prueba_aut.steps.LoginSteps;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import net.thucydides.core.annotations.Steps;
 
-public class LoginDefinition {
+public class LoginDefinition extends conexion_base_datos {
 
+	
 	@Steps
 	LoginSteps LoginSteps;
 	
@@ -15,18 +17,18 @@ public class LoginDefinition {
 	public void ingreso_a_planet_con_la_url_correspondiente() throws Throwable {
 	    // Write code here that turns the phrase above into concrete actions
 	    //throw new PendingException();
-		LoginSteps.Browser();
 		
+		LoginSteps.Browser();		
 	}
 
-	@When("^Ingreso de usuario \"([^\"]*)\"$")
+	@When("^ingreso de usuario \"([^\"]*)\"$")
 	public void Ingreso_de_usuario(String usuario) throws Throwable {
 	    // Write code here that turns the phrase above into concrete actions
 	    //throw new PendingException();
 		LoginSteps.IngresoUsuario(usuario);		
 	}
 
-	@When("^Ingreso de password \"([^\"]*)\"$")
+	@When("^ingreso de password \"([^\"]*)\"$")
 	public void Ingreso_de_password(String password) throws Throwable {
 	    // Write code here that turns the phrase above into concrete actions
 	    //throw new PendingException();
@@ -55,14 +57,16 @@ public class LoginDefinition {
 	public void ingreso_aplicativo_smartdealer_ventas_prepago() throws Throwable {
 	    // Write code here that turns the phrase above into concrete actions
 	    //throw new PendingException();
+		
 		LoginSteps.browser_smartdealer();
 		
 	}
 
 	@When("^ingreso de usuario smartdealer \"([^\"]*)\"$")
-	public void ingreso_de_usuario_smartdealer(String usuario_sd) throws Throwable {
+	public void ingreso_de_usuario_smartdealer(String usuario_sd) {
 	    // Write code here that turns the phrase above into concrete actions
 	    //throw new PendingException();
+		//conexion_sql_server();
 		LoginSteps.Ingreso_Usuario_Smartdealer(usuario_sd);
 	}
 
@@ -120,12 +124,6 @@ public class LoginDefinition {
 	    // Write code here that turns the phrase above into concrete actions
 	    //throw new PendingException();
 		LoginSteps.Click_Calificar_Suscriptor();
-	}
-	@Then("^Ingreso a smart dealer$")
-	public void ingreso_a_smart_dealer() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-	   // throw new PendingException();
-		LoginSteps.IngresoSmartdealer();
 	}
 	
 	@Then("^doy click cerrar sesion Prepago$")
@@ -572,14 +570,19 @@ public class LoginDefinition {
 	    //throw new PendingException();
 	}
 	
+	@Given("^validar mensaje despues de calificar suscriptor \"([^\"]*)\"$")
+	public void validar_mensaje_despues_de_calificar_suscriptor(String mensaje_calificacion) throws Exception {
+	    // Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
+		LoginSteps.validar_mensaje_calificacion(mensaje_calificacion);
+	}	
 	
-	
-	
-	
-	
-	
-	
-	
+	@Given("^validar resultado de la calificacion \"([^\"]*)\"$")
+	public void validar_resultado_de_la_calificacion(String labe_aprobado) throws Exception {
+	    // Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
+		LoginSteps.validar_label_aprobado(labe_aprobado);
+	}
 	
 	
 }

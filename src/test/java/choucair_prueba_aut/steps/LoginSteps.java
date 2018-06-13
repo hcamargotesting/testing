@@ -40,7 +40,7 @@ public class LoginSteps {
 	}
 
 	
-	/* SMART DEALER*/
+	/****************************************** SMART DEALER *************************************************/
 	@Step
 	public void browser_smartdealer() {
 		// TODO Auto-generated method stub
@@ -90,11 +90,6 @@ public class LoginSteps {
 	public void Click_Calificar_Suscriptor() {
 		// TODO Auto-generated method stub
 		LoginPageObject.Click_Calificar_Suscriptor();
-	}
-
-	public void IngresoSmartdealer() {
-		// TODO Auto-generated method stub
-		LoginPageObject.IngresoSmartdealer();		
 	}
 
 	public void ClickCerrarSesionSmartdealer() {
@@ -299,7 +294,7 @@ public class LoginSteps {
 
 	public void Click_radio_button_plan_basico_familia() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Click_radio_button_plan_basico_familia();
+		LoginPageObject.Click_radio_button_plan_basico_familia(10);
 	}
 
 	public void Click_prepago_favorito() {
@@ -359,23 +354,27 @@ public class LoginSteps {
 
 	public void Click_finalizar_venta() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Click_finalizar_venta();
+		LoginPageObject.Click_finalizar_venta(10);
 	}
 	public void Click_boton_agendar() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Click_boton_agendar();
+		LoginPageObject.Click_boton_agendar(10);
 	}
 	public void Validar_resultado_finalizar() {
 		// TODO Auto-generated method stub
 		LoginPageObject.Validar_resultado_finalizar();
 	}
+
+	public void validar_mensaje_calificacion(String mensaje_calificacion) {
+		// TODO Auto-generated method stub
+		LoginPageObject.Validar_mensaje_calificacion_suscriptor(mensaje_calificacion,10);
+	}
+
+	public void validar_label_aprobado(String labe_aprobado) {
+		// TODO Auto-generated method stub
+		LoginPageObject.validar_label_aprobado(labe_aprobado,10);
+	}
 	
-
-	
-
-
-
-
 
 	
 }

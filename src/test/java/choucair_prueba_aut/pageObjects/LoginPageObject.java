@@ -1,21 +1,27 @@
 package choucair_prueba_aut.pageObjects;
 
+
+import net.serenitybdd.core.Serenity;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.DefaultUrl;
 import java.util.*;
-import java.awt.AWTException;
 import java.awt.Robot;
-import java.awt.event.KeyEvent;	
-import javax.swing.JOptionPane;
-
-
+import java.awt.event.KeyEvent; 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import choucair_prueba_aut.model.*;
+import choucair_prueba_aut.*;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
+
+//@DefaultUrl("http://planet.choucairtesting.com/bin/login/Main/WebHome?origurl=/")
 
 @DefaultUrl("http://172.21.141.103/SmartDealer/Pages/Public/Login.aspx")
 //@DefaultUrl("http://172.21.141.92/SmartDealer/Pages/Public/Login.aspx")
@@ -24,9 +30,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 @DefaultUrl("http://planet.choucairtesting.com/bin/login/Main/WebHome?origurl=/")
 
 */
+	
 
 public class LoginPageObject extends PageObject {
-
 	
 	//Localizadores o mapeo de objetos
 	String StrUsuario="username";
@@ -35,25 +41,15 @@ public class LoginPageObject extends PageObject {
 	String StrMensaje="//*[@id='patternSideBarContents']/div[1]/a";
 	String StrMenu="Hervin Camargo Carlier";		
 
-	//Localizadores o mapeo de objetos smart dealer
-	//lOGIN
-	//String StrContrasena_sd="//INPUT[@id='lgnIngreso_Password']";
-	//String StrBotonLogin="//INPUT[@id='lgnIngreso_LoginButton']";
-	//String StrLoginSd="//INPUT[@id='lgnIngreso_Password']";
-	//Menu
-	//String StrMenuSd="//A[@class='ctl00_mnuMain_1 mainmenustyle ctl00_mnuMain_3'][text()='Captura']";
-	//String StrSubMenuSd="//A[@class='ctl00_mnuMain_1 submenustyle ctl00_mnuMain_5'][text()='Prepago Ideal']";
-	//String StrSubItemSd="(//A[@class='ctl00_mnuMain_1 submenustyle ctl00_mnuMain_5'][text()='Gestion Captura'][text()='Gestion Captura'])[1]";
-	//***Pantalla vendedor***
-	//String Str_Cmb_vendedor="//INPUT[@id='ctl00_mainContent_cmbVendedor_Input']";
-	//String Str_cmb_punto_venta="//INPUT[@id='ctl00_mainContent_cmbPuntoVenta_Input']";
-	//String Str_distrito="//SPAN[@id='ctl00_mainContent_lblDistrito']";
-	//String Str_canal="//SPAN[@id='ctl00_mainContent_lblCanal']";
-	//String Str_subcanal="//SPAN[@id='ctl00_mainContent_lblSUbcanal']";
 	
-	// bloque para declarar con la anotacion @findby
-	//String StrUsuario_sd ="//INPUT[@id='lgnIngreso_UserName']";
+	/* instancia clase runner*/
+	RunnerPrepagoSd RunnerPrepagoSd;
 	
+	obtener_config_propierties obtener_clases = new obtener_config_propierties();
+	RunnerPrepagoSd class_runner = new RunnerPrepagoSd();
+	
+	
+	//obtener_config_propierties obtener_config_propierties;
 	
 	Random random = new Random();
 	int numero_documento = Math.abs((111111111)+random.nextInt(99999999));
@@ -68,23 +64,22 @@ public class LoginPageObject extends PageObject {
 	String str_home_cliente="";
 	String str_home_origen="";
 	String str_home_tipo_susc="";
+	String[] ciudad= null;
+	String[] departamento= null;
 	
-	
-	
-	String StrUsuario_sd_ini="//INPUT[@id='lgnIngreso_UserName']";
-	@FindBy(xpath ="//INPUT[@id='lgnIngreso_UserName']")WebElementFacade StrUsuario_sd;
-	@FindBy(xpath ="//INPUT[@id='lgnIngreso_Password']")WebElementFacade StrContrasena_sd;
-	@FindBy(xpath ="//INPUT[@id='lgnIngreso_LoginButton']")WebElementFacade StrBotonLogin;
-	@FindBy(xpath ="//A[@class='ctl00_mnuMain_1 mainmenustyle ctl00_mnuMain_3'][text()='Captura']")WebElementFacade StrMenuSd;
-	@FindBy(xpath ="//A[@class='ctl00_mnuMain_1 submenustyle ctl00_mnuMain_5'][text()='Prepago Ideal']")WebElementFacade StrSubMenuSd;
-	@FindBy(xpath ="(//A[@class='ctl00_mnuMain_1 submenustyle ctl00_mnuMain_5'][text()='Gestion Captura'][text()='Gestion Captura'])[1]")WebElementFacade StrSubItemSd;
-	@FindBy(xpath ="//INPUT[@id='ctl00_mainContent_cmbVendedor_Input']")WebElementFacade Str_Cmb_vendedor;
-	@FindBy(xpath ="//INPUT[@id='ctl00_mainContent_cmbPuntoVenta_Input']")WebElementFacade Str_punto_venta;
-	@FindBy(xpath ="//SPAN[@id='ctl00_mainContent_lblDistrito']")WebElementFacade Str_distrito;
-	@FindBy(xpath ="//SPAN[@id='ctl00_mainContent_lblCanal']")WebElementFacade Str_canal;
-	@FindBy(xpath ="//SPAN[@id='ctl00_mainContent_lblSUbcanal']")WebElementFacade Str_subcanal;
-	@FindBy(xpath ="//INPUT[@id='ctl00_mainContent_icoBorrar']")WebElementFacade Str_calificar_suscriptor;
-	@FindBy(xpath = "//INPUT[@id='ctl00_mainContent_icoNext']")WebElementFacade Str_boton_sigiente_vendedor;
+	@FindBy(xpath = "//INPUT[@id='lgnIngreso_UserName']")WebElementFacade StrUsuario_sd;
+	@FindBy(xpath = "//INPUT[@id='lgnIngreso_Password']")WebElementFacade StrContrasena_sd;
+	@FindBy(xpath = "//INPUT[@id='lgnIngreso_LoginButton']")WebElementFacade StrBotonLogin;
+	@FindBy(xpath = "//A[@class='ctl00_mnuMain_1 mainmenustyle ctl00_mnuMain_3'][text()='Captura']")WebElementFacade StrMenuSd;
+	@FindBy(xpath = "//A[@class='ctl00_mnuMain_1 submenustyle ctl00_mnuMain_5'][text()='Prepago Ideal']")WebElementFacade StrSubMenuSd;
+	@FindBy(xpath = "(//A[@class='ctl00_mnuMain_1 submenustyle ctl00_mnuMain_5'][text()='Gestion Captura'][text()='Gestion Captura'])[1]")WebElementFacade StrSubItemSd;
+	@FindBy(xpath = "//INPUT[@id='ctl00_mainContent_cmbVendedor_Input']")WebElementFacade Str_Cmb_vendedor;
+	@FindBy(xpath = "//INPUT[@id='ctl00_mainContent_cmbPuntoVenta_Input']")WebElementFacade Str_punto_venta;
+	@FindBy(xpath = "//SPAN[@id='ctl00_mainContent_lblDistrito']")WebElementFacade Str_distrito;
+	@FindBy(xpath = "//SPAN[@id='ctl00_mainContent_lblCanal']")WebElementFacade Str_canal;
+	@FindBy(xpath = "//SPAN[@id='ctl00_mainContent_lblSUbcanal']")WebElementFacade Str_subcanal;
+	@FindBy(xpath = "//INPUT[@id='ctl00_mainContent_icoBorrar']")WebElementFacade Str_calificar_suscriptor;
+	@FindBy(xpath = "//INPUT[@id='ctl00_mainContent_icoNext']")WebElementFacade Str_boton_siguiente_vendedor;
 	@FindBy(xpath = "//A[@id='ctl00_lsLogout']")WebElementFacade StrCerrarSesion;
 	@FindBy(xpath = "//INPUT[@id='ctl00_mainContent_cmbVendedor_Input']")WebElementFacade Str_vendedor;
 	@FindBy(xpath = "//INPUT[@id='ctl00_mainContent_cmbPuntoVenta_Input']")WebElementFacade Str_punto_de_venta;
@@ -163,52 +158,27 @@ public class LoginPageObject extends PageObject {
 	@FindBy(xpath = "//INPUT[@id='ctl00_mainContent_icoSearchCaptura']")WebElementFacade Str_btn_buscar;
 	@FindBy(xpath = "//SPAN[@id='ctl00_mainContent_gvCaptura_ctl02_lblCodSuscrpcion']")WebElementFacade lbl_home_numero_documento;
 	@FindBy(xpath = "//SPAN[@id='ctl00_mainContent_gvCaptura_ctl02_lblCodClienteIBS']")WebElementFacade lbl_home_suscripcion;
-	@FindBy(xpath = "//SPAN[@id='ctl00_mainContent_gvCaptura_ctl02_lblEstado']")WebElementFacade lbl_home_estado;
+	@FindBy(xpath = "//SPAN[@id='ctl00_mainContent_gvCaptura_ctl02_lblEstado']")WebElementFacade lbl_home_estado;	
+	@FindBy(xpath = "//SPAN[@id='ctl00_mainContent_Label4']")WebElementFacade lbl_titulo_suscriptor;
+	@FindBy(xpath = "//SPAN[@id='ctl00_mainContent_lblmsgerror']")WebElementFacade lbl_resultado_calificar_suscriptor;
+	@FindBy(xpath = "//SPAN[@id='ctl00_mainContent_lblResultadoCalificacionPN']")WebElementFacade lbl_label_resultado_calificacion;
+	
 	
 	String Str_resultado="//SPAN[@id='ctl00_mainContent_lblOkCaptura']";
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//*********************************************************************************
-		
-	public boolean Consulta_Estado_Suscripcion() throws AWTException {
-		Robot robot = new Robot();
-		
-		try {
-			robot.keyPress(KeyEvent.VK_PAGE_UP);
-			robot.keyPress(KeyEvent.VK_HOME);
-			/* menu home prepago */
-			waitFor(StrMenuSd).click();	
-			waitFor(StrSubMenuSd).click();	
-			waitFor(Str_home_prepago).click();
-			
-			/* filtra por documento y estado */	
-			
-			waitFor(Str_input_numero_documento_home).sendKeys(Integer.toString(numero_documento));
-			waitFor(Str_btn_buscar).click();
-			
-			
-			return false;
-			
-		}catch(Exception e) {
-			return false;
-			}
-		}	
+	
+	public String GetValue(String value) {
+		String dato="";
+		dato = choucair_prueba_aut.RunnerPrepagoSd.collection_test_case.get(value);
+		return dato.toString();
+	}
+	
 	public void InputUsuario(String usuario) {
 		// TODO Auto-generated method stub
 		try {
-			find(By.name(StrUsuario)).sendKeys(usuario);			
+			find(By.name(StrUsuario)).sendKeys(usuario);				
 		}catch(Exception e) {
 			
 		}
@@ -234,31 +204,13 @@ public class LoginPageObject extends PageObject {
 	}
 	
 	
-	/* smart dealer prepago*/
+	
+	/*****************************************SMARTDEALER PREPAGO******************************/
 	public void Input_Usuario_Smartdealer(String usuario_sd) {
 		// TODO Auto-generated method stub
-		
+	
 		try {
-			
-			waitFor(StrUsuario_sd).sendKeys(usuario_sd);
-			//find(By.xpath(StrUsuario_sd)).click();
-			//find(By.xpath(StrUsuario_sd)).click();
-			/*
-			Boolean existe_objecto;
-			
-			//waitFor(StrUsuario_sd).isDisplayed();
-			
-			existe_objecto= find(By.xpath(StrUsuario_sd_ini)).isDisplayed();
-			
-			JOptionPane.showMessageDialog(null, existe_objecto);
-			if (existe_objecto==true )
-			    {
-				JOptionPane.showMessageDialog(null, "si existe");
-			    }else if(existe_objecto==false )			    {
-			    	JOptionPane.showMessageDialog(null, "no existe");
-			    }
-
-			*/
+			waitFor(StrUsuario_sd).sendKeys(GetValue("txt_username").toString());
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();
 		}
@@ -267,9 +219,7 @@ public class LoginPageObject extends PageObject {
 	public void Input_Contrasena_Smartdealer(String contrasena_sd) {
 		// TODO Auto-generated method stub
 		try {
-			
-			waitFor(StrContrasena_sd).sendKeys(contrasena_sd);
-			
+			waitFor(StrContrasena_sd).sendKeys(GetValue("txt_password").toString());		
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();
 		}
@@ -309,42 +259,21 @@ public class LoginPageObject extends PageObject {
 			waitFor(StrSubItemSd).click();
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();
-		}
-		
+		}	
 	}
 
 	public void Click_Calificar_Suscriptor() {
 		// TODO Auto-generated method stub
 
 		try {
-			waitFor(Str_calificar_suscriptor).click();
-			Thread.sleep(6000);
+			waitFor(Str_calificar_suscriptor).click();	
+			//Thread.sleep(14000);			
 		}catch(Exception e) {
-			waitFor(StrCerrarSesion).click();
-			
+			waitFor(StrCerrarSesion).click();			
 		}
 	}
 	
-	public void IngresoSmartdealer() {
-		// TODO Auto-generated method stub
-		
-		try {
-				/*
-			String valor="1";
-			if(valor=="1"){
-				System.out.println("Login Correcto");
-				find(By.xpath(StrCerrarSesion)).click();
-			}else{
-				System.out.println("Login Incorrecto");
-				find(By.xpath(StrCerrarSesion)).click();
-			}
-			*/
-				
-		}catch(Exception e) {
-			waitFor(StrCerrarSesion).click();				
-		}
-			
-	}
+
 	
 	public void Click_Cerrar_Sesion_Smartdealer() {
 		// TODO Auto-generated method stub
@@ -360,24 +289,19 @@ public class LoginPageObject extends PageObject {
 	public void Select_Punto_de_Venta() {
 		// TODO Auto-generated method stub
 		try {
-			
 			if(waitFor(Str_vendedor).isDisplayed()) {
-				//JOptionPane.showMessageDialog(null, "uno..");				
-				if(waitFor(Str_vendedor).isEnabled()) {
-					//JOptionPane.showMessageDialog(null, "dos..");
-					waitFor(Str_vendedor).typeAndTab("45621311");
+				if(waitFor(Str_vendedor).isEnabled()) {				
+					waitFor(Str_vendedor).typeAndTab(GetValue("vendedor_asociado").toString());
 				}else {
-					//JOptionPane.showMessageDialog(null, "tres..");			
 				}
 				
 			}else {
-				//JOptionPane.showMessageDialog(null, "cuatro..");			
 			}
-			Thread.sleep(2500);
+			Thread.sleep(4000);
 			waitFor(Str_punto_de_venta).click();
-			Thread.sleep(2500);
+			Thread.sleep(2300);
 			waitFor(Str_item_punto_de_venta).click();
-			
+			Thread.sleep(3000);
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -388,19 +312,14 @@ public class LoginPageObject extends PageObject {
 				
 		try {	
 			
-			waitFor(Str_boton_sigiente_vendedor).click();	
+			waitFor(Str_boton_siguiente_vendedor).click();	
+			Alert alert = ExpectedConditions.alertIsPresent().apply(getDriver());		   
+		    if(alert != null) {
+		    	getDriver().switchTo().alert().accept();
+		    }	
 
-			Alert alert = ExpectedConditions.alertIsPresent().apply(getDriver());
-			   
-			    if(alert != null) {
-			    	getDriver().switchTo().alert().accept();
-			    }
-			    else {
-			    	System.out.println("continuar");
-			    }
-					
-		}catch(Exception e) {
-			
+		}catch(Exception e) {		
+			System.out.println("error pantalla vendedor");
 			waitFor(StrCerrarSesion).click();			
 		}		
 	}
@@ -420,26 +339,18 @@ public class LoginPageObject extends PageObject {
 
 	public void Input_Numero_Documento_suscriptor() {
 		// TODO Auto-generated method stub
-		/*
-		Random random = new Random();
-		int numero_documento = Math.abs((111111111)+random.nextInt(99999999));
-		*/
-		try {
-	
-			waitFor(Str_numero_documento).sendKeys(Integer.toString(numero_documento));
-				
+
+		try {	
+			waitFor(Str_numero_documento).sendKeys(GetValue("documento_suscriptor").toString());				
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
-		}
-		
+		}	
 	}
 
 	public void Input_Lugar_Expedicion_suscriptor() {
 		// TODO Auto-generated method stub
-		try {
-			
-			waitFor(Str_lugar_expedicion).sendKeys("Cali");
-			
+		try {		
+			waitFor(Str_lugar_expedicion).sendKeys(GetValue("txt_lug_exp").toString());			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -450,7 +361,7 @@ public class LoginPageObject extends PageObject {
 		// TODO Auto-generated method stub
 		try {
 			
-			waitFor(Str_nombre_suscriptor).typeAndTab("Manuel Fernando");
+			waitFor(Str_nombre_suscriptor).typeAndTab(GetValue("txt_nombre").toString());
 						
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
@@ -462,9 +373,8 @@ public class LoginPageObject extends PageObject {
 		// TODO Auto-generated method stub
 		try {
 			
-			waitFor(Str_apellido).typeAndTab("Ramirez Espinoza");
-			
-			
+			waitFor(Str_apellido).typeAndTab(GetValue("txt_apellido").toString());
+					
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -488,7 +398,7 @@ public class LoginPageObject extends PageObject {
 		// TODO Auto-generated method stub
 		try {
 
-			waitFor(Str_actividad_economicas).sendKeys("0112");
+			waitFor(Str_actividad_economicas).sendKeys(GetValue("cmb_actividad_economica").toString());
 			Thread.sleep(1500);
 			waitFor(Str_item_actividad_economicas).click();
 
@@ -502,7 +412,7 @@ public class LoginPageObject extends PageObject {
 		// TODO Auto-generated method stub
 		try {
 			
-			waitFor(Str_referencia_personal).sendKeys("Juan Moreno");
+			waitFor(Str_referencia_personal).sendKeys(GetValue("txt_ref_pers").toString());
 			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
@@ -524,74 +434,56 @@ public class LoginPageObject extends PageObject {
 
 	public void Input_indicativo_Telefono() {
 		// TODO Auto-generated method stub
-		try {
-			
-			waitFor(Str_indicativo_telefono).sendKeys("1");
-						
+		try {		
+			waitFor(Str_indicativo_telefono).sendKeys(GetValue("txt_tel_ref").toString());						
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
-		}
-		
+		}		
 	}
 
 	public void Input_Numero_Telefonico() {
 		// TODO Auto-generated method stub
-		try {
-			
-			waitFor(Str_numero_telefonico).sendKeys("2136598");
-						
+		try {			
+			waitFor(Str_numero_telefonico).sendKeys(GetValue("txt_tel_ref_1").toString());						
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
-		}
-		
+		}		
 	}
 
 	public void Input_Fecha_Nacimiento() {
 		// TODO Auto-generated method stub
-		try {
-			
-			waitFor(Str_fecha_nacimiento).sendKeys("3/2/1978");
-			
+		try {			
+			waitFor(Str_fecha_nacimiento).sendKeys(GetValue("txt_fec_nac").toString());			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
-		}
-		
+		}		
 	}
 
 	public void Select_Ciudad() {
 		// TODO Auto-generated method stub
-		try {
-			/*
-			waitFor(Str_ciudad).sendKeys("SANTA FE DE BOGOTA");
-			waitFor(Str_item_ciudad).sendKeys("SANTA FE DE BOGOTA");	
-			*/
-			//waitFor(Str_ciudad).sendKeys("MEDELLIN");
-			waitFor(Str_ciudad).sendKeys("SANTA FE DE BOGOTA");
-			waitFor(Str_item_ciudad).click();
-			
+		try {			
+			String[] ciudad= GetValue("cmb_ciudad").toString().split(" - ");			
+			waitFor(Str_ciudad).sendKeys(ciudad[0].toString());
+			waitFor(Str_item_ciudad).click();			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
-		}
-		
-		
+		}				
 	}
 
 	public void Input_Indicativo_Instalacion() {
 		// TODO Auto-generated method stub
 		try {
-			waitFor(Str_indicativo_instalacion).sendKeys("1");
+			waitFor(Str_indicativo_instalacion).sendKeys(GetValue("txt_tel_sus_1").toString());
 			waitFor(Str_indicativo_instalacion).click();			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
-		}
-		
+		}		
 	}
 
 	public void Input_Numero_Instalacion() {
 		// TODO Auto-generated method stub
-		try {
-			
-			waitFor(Str_numero_instalacion).sendKeys("2366598");			
+		try {			
+			waitFor(Str_numero_instalacion).sendKeys(GetValue("txt_tel_sus_2").toString());			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -599,10 +491,8 @@ public class LoginPageObject extends PageObject {
 
 	public void Input_Indicativo_Operador() {
 		// TODO Auto-generated method stub
-		try {
-			
-			waitFor(Str_indicativo_operador).typeAndTab("303");
-								
+		try {			
+			waitFor(Str_indicativo_operador).typeAndTab(GetValue("cmb_cel_sus_1").toString());								
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -611,7 +501,7 @@ public class LoginPageObject extends PageObject {
 	public void Input_Numero_Celular() {
 		// TODO Auto-generated method stub
 		try {
-			waitFor(Str_numero_celular).sendKeys("3246598");					
+			waitFor(Str_numero_celular).sendKeys(GetValue("txt_cel_sus_2").toString());					
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -621,7 +511,7 @@ public class LoginPageObject extends PageObject {
 		// TODO Auto-generated method stub
 		try {
 			
-			waitFor(Str_indicativo_otro).sendKeys("1");
+			waitFor(Str_indicativo_otro).sendKeys(GetValue("txt_otro_sus_1").toString());
 			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
@@ -632,7 +522,7 @@ public class LoginPageObject extends PageObject {
 	public void Input_Telefonico_Otro() {
 		// TODO Auto-generated method stub
 		try {			
-			waitFor(Str_telefono_otro).sendKeys("3265689");						
+			waitFor(Str_telefono_otro).sendKeys(GetValue("txt_otro_sus_2").toString());						
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -642,7 +532,7 @@ public class LoginPageObject extends PageObject {
 	public void Input_Numero_Extension_Otro() {
 		// TODO Auto-generated method stub
 		try {		
-			waitFor(Str_numero_extension_otro).sendKeys("2541");						
+			waitFor(Str_numero_extension_otro).sendKeys(GetValue("txt_otro_ext").toString());						
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -652,7 +542,7 @@ public class LoginPageObject extends PageObject {
 	public void Select_Vias_Acceso() {
 		// TODO Auto-generated method stub
 		try {		
-			waitFor(Str_vias_acceso).typeAndEnter("CARRERA");						
+			waitFor(Str_vias_acceso).typeAndEnter(GetValue("cmb_gen_dir_1").toString());						
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -662,7 +552,7 @@ public class LoginPageObject extends PageObject {
 	public void Input_Direccion_Instalacion() {
 		// TODO Auto-generated method stub
 		try {			
-			waitFor(Str_direccion_instalacion).sendKeys("106A");						
+			waitFor(Str_direccion_instalacion).sendKeys(GetValue("txt_gen_dir_2").toString());						
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -692,7 +582,7 @@ public class LoginPageObject extends PageObject {
 	public void Input_Numero_Orientacion_Uno() {
 		// TODO Auto-generated method stub
 		try {
-			waitFor(Str_tipo_numero_orientacion).sendKeys("142");
+			waitFor(Str_tipo_numero_orientacion).sendKeys(GetValue("txt_ger_dir_4").toString());
 
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
@@ -702,7 +592,7 @@ public class LoginPageObject extends PageObject {
 	public void Input_Numero_Orientacion_Dos() {
 		// TODO Auto-generated method stub
 		try {
-			waitFor(Str_orientacion_dos).sendKeys("00");
+			waitFor(Str_orientacion_dos).sendKeys(GetValue("txt_ger_dir_5").toString());
 			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
@@ -712,25 +602,23 @@ public class LoginPageObject extends PageObject {
 	public void Click_Boton_Georeferenciar() {
 		// TODO Auto-generated method stub
 		try {	
-			
-			Robot robot = new Robot();
 			waitFor(Str_boton_georeferenciar).click();
 			Thread.sleep(7000);
-			robot.keyPress(KeyEvent.VK_PAGE_UP);
-			
+			getDriver().switchTo().activeElement().sendKeys(Keys.PAGE_DOWN);			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
-		}	
+		}			
 	}
 
 
 	public void Select_Barrio() {
 		// TODO Auto-generated method stub
 		try {
-			waitFor(Str_barrio).sendKeys("Lombardia");
-			Thread.sleep(1200);
-			waitFor(Str_barrio).click();
-							
+			 Thread.sleep(1000);			 
+			 waitFor(Str_barrio).sendKeys(GetValue("cmb_barrio").toString());
+			 Thread.sleep(1200);
+			 waitFor(Str_item_barrio).click();
+				
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -739,7 +627,8 @@ public class LoginPageObject extends PageObject {
 	public void Select_Estrato() {
 		// TODO Auto-generated method stub
 		try {
-			waitFor(Str_estrato).typeAndTab("2");
+			System.out.println(GetValue("cmb_estrato").toString());
+			waitFor(Str_estrato).typeAndTab(GetValue("cmb_estrato").toString());
 			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
@@ -758,10 +647,7 @@ public class LoginPageObject extends PageObject {
 	public void Input_Email() {
 		// TODO Auto-generated method stub
 		try {
-			
-			waitFor(Str_email).sendKeys("JUANCHO");
-			
-			
+			waitFor(Str_email).sendKeys(GetValue("txt_e_mail").toString());
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -769,10 +655,8 @@ public class LoginPageObject extends PageObject {
 
 	public void Input_Dominio_Email() {
 		// TODO Auto-generated method stub
-		try {
-			
-			waitFor(Str_dominio_parcial).sendKeys("@outlook.com");
-						
+		try {			
+			waitFor(Str_dominio_parcial).sendKeys(GetValue("txt_e_mail_1").toString());						
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}		
@@ -806,26 +690,11 @@ public class LoginPageObject extends PageObject {
 		try {
 			
 			if(waitFor(Str_modalidad_pago_espera_pago).isDisplayed()) {
-				//System.out.println("1");
-				//JOptionPane.showMessageDialog(null, "1");
 				if(waitFor(Str_modalidad_pago_espera_pago).isEnabled()) {
-					//JOptionPane.showMessageDialog(null, "2");
-					//System.out.println("2");
 					waitFor(Str_modalidad_pago_espera_pago).click();
 				}
 			}
-			/*
-			if(waitFor(Str_modalidad_pago_vendedor).isDisplayed()) {
-				//JOptionPane.showMessageDialog(null, "3");
-				System.out.println("3");
-				if(waitFor(Str_modalidad_pago_vendedor).isEnabled()) {
-					//JOptionPane.showMessageDialog(null, "4");
-					
-					waitFor(Str_modalidad_pago_vendedor).click();
-					System.out.println("4");
-				}
-			}			
-			*/
+
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -835,10 +704,7 @@ public class LoginPageObject extends PageObject {
 		// TODO Auto-generated method stub
 		try {
 		
-			waitFor(Str_oferta_comercial_tv).click();
-			
-			Robot robot = new Robot();
-			robot.keyPress(KeyEvent.VK_PAGE_UP);
+			waitFor(Str_oferta_comercial_tv).click();			
 			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
@@ -848,12 +714,10 @@ public class LoginPageObject extends PageObject {
 	public void Click_Boton_Calificar() {
 		// TODO Auto-generated method stub
 		try {
-			
-			Robot robot = new Robot();
-			robot.keyPress(KeyEvent.VK_HOME);
+
 			waitFor(Str_boton_calificar).click();
-			//Thread.sleep(10000);
-						
+			
+			Thread.sleep(10000);		
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}	
@@ -863,10 +727,8 @@ public class LoginPageObject extends PageObject {
 		// TODO Auto-generated method stub
 		try {
 			Thread.sleep(6000);
-			Robot robot = new Robot();
 			waitFor(Str_grabar_ibs).click();
-			
-			robot.keyPress(KeyEvent.VK_PAGE_UP);
+			Thread.sleep(6000);
 			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
@@ -876,9 +738,6 @@ public class LoginPageObject extends PageObject {
 	public void Click_Siguiente_Pantalla_Suscriptor() {
 		// TODO Auto-generated method stub
 		try {
-			Robot robot = new Robot();
-			robot.keyPress(KeyEvent.VK_PAGE_UP);
-			robot.keyPress(KeyEvent.VK_PAGE_UP);
 			
 			Thread.sleep(13000);
 			waitFor(Str_siguiente_pantalla_suscriptor).click();
@@ -888,13 +747,31 @@ public class LoginPageObject extends PageObject {
 		}		
 	}
 
-	public void Click_radio_button_plan_basico_familia() {
+	public void Click_radio_button_plan_basico_familia(int tiempo_espera) {
 		// TODO Auto-generated method stub
-		try {			
-			waitFor(Str_plan_basico).click();			
+		try {
+			//System.out.println("Vaidar_mensaje_calificacion_suscriptor paso2: ");
+			waitFor(Str_plan_basico).click();
+
 		}catch(Exception e) {
-			waitFor(StrCerrarSesion).click();			
+			
+			try {
+				Thread.sleep(3000);
+				tiempo_espera=tiempo_espera-1;
+				if(tiempo_espera>=0) {
+					this.Click_radio_button_plan_basico_familia(tiempo_espera);
+				}else {
+					waitFor(StrCerrarSesion).click();
+				}
+				
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				//System.out.println("Validar_mensaje_calificacion_suscriptor paso2: " + e1.toString());
+				waitFor(StrCerrarSesion).click();
+			}
+
 		}
+
 	}
 
 	public void Click_Prepago_Favorito() {
@@ -927,15 +804,10 @@ public class LoginPageObject extends PageObject {
 	}
 
 	public void Ingresar_numero_contrato() {
-		// TODO Auto-generated method stub
-		Random random = new Random();
-		int rand = Math.abs((11111111)+random.nextInt(99999999));
-		
+		// TODO Auto-generated method stub	
 		try {
-			Robot robot = new Robot();
-			robot.keyPress(KeyEvent.VK_PAGE_DOWN);
-			
-			waitFor(Str_numero_contrato).sendKeys(Integer.toString(rand));
+
+			waitFor(Str_numero_contrato).sendKeys(GetValue("txt_no_contrato_1").toString());
 			
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
@@ -944,11 +816,8 @@ public class LoginPageObject extends PageObject {
 
 	public void Ingresar_numero_verificacion() {
 		// TODO Auto-generated method stub
-		Random random = new Random();
-		int rand = Math.abs((1)+random.nextInt(9));
-
 		try {
-			waitFor(Str_numero_verificacion).sendKeys(Integer.toString(rand));
+			waitFor(Str_numero_verificacion).sendKeys(GetValue("txt_no_contrato_2").toString());
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -986,7 +855,7 @@ public class LoginPageObject extends PageObject {
 	public void Ingresar_valor_pago_efectivo() {
 		// TODO Auto-generated method stub
 		try {
-			waitFor(Str_pago_efectivo).sendKeys("0");				        
+			waitFor(Str_pago_efectivo).sendKeys(GetValue("txt_efec_valor").toString());				        
 		}catch(Exception e) {
 			waitFor(StrCerrarSesion).click();			
 		}
@@ -1006,7 +875,7 @@ public class LoginPageObject extends PageObject {
 	public void Ingresar_comentario_orden_instalacion() {
 		// TODO Auto-generated method stub
 	try {
-			waitFor(Str_comentario_orden_instalacion).sendKeys("Deco prepago sd");
+			waitFor(Str_comentario_orden_instalacion).sendKeys(GetValue("txt_ior_inst_comentario").toString());
 			        
 		}catch(Exception e) {
 			
@@ -1024,60 +893,158 @@ public class LoginPageObject extends PageObject {
 		}
 	}
 
-	public void Click_finalizar_venta() {
+	public void Click_finalizar_venta(int tiempo_espera) {
 		// TODO Auto-generated method stub
-	try {		
-			waitFor(Str_finalizar_venta).click();
-				        
-		}catch(Exception e) {			
-			waitFor(StrCerrarSesion).click();			
+	
+	try {
+		getDriver().switchTo().activeElement().sendKeys(Keys.PAGE_DOWN);	
+				
+		waitFor(Str_finalizar_venta).click();
+
+	}catch(Exception e) {
+		
+		try {
+
+			tiempo_espera=tiempo_espera-1;
+			if(tiempo_espera>=0) {
+				Thread.sleep(3000);
+				this.Click_finalizar_venta(tiempo_espera);
+			}else {
+				waitFor(StrCerrarSesion).click();
+			}
+			
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			waitFor(StrCerrarSesion).click();
 		}
 
 	}
-	public void Click_boton_agendar() {
+	
+
+	}
+	public void Click_boton_agendar(int tiempo_espera) {
 		// TODO Auto-generated method stub
 		
 		try {
-			waitFor(Str_aceptar_agendamiento).click();	
+			waitFor(Str_aceptar_agendamiento).click();
 			Thread.sleep(3000);
-		
-		}catch(Exception e){
-			waitFor(StrCerrarSesion).click();		
+		}catch(Exception e) {
+			
+			try {
+				
+				tiempo_espera=tiempo_espera-1;
+				if(tiempo_espera>=0) {
+					Thread.sleep(3000);
+					this.Click_boton_agendar(tiempo_espera);
+				}else {
+					waitFor(StrCerrarSesion).click();
+				}
+				
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				waitFor(StrCerrarSesion).click();
+			}
 		}
-
+		
+		
+		
 	}
 	public void Validar_resultado_finalizar() {
 		// TODO Auto-generated method stub
+		
 	try {
-			String str_validar,str_validar_2;
-			Boolean resul_consulta=false;
-			//Thread.sleep(5000);
-			str_validar_2= find(By.xpath(Str_resultado)).getText().trim();
+			
+			String str_validar;
 			str_validar=waitFor(Str_resultado_finalizar).getText().toString();
-			String StrResultadoFinalizado="El proceso de Captura Finalizó correctamente";	
-			System.out.println("el resultado de str_validar:_" + str_validar +"_");
-			System.out.println("el resultado de str_validar_2_:" + str_validar_2 +"_");
-			System.out.println("el resultado de StrResultadoFinalizado:_" + StrResultadoFinalizado +"_");
-			if(StrResultadoFinalizado.equals(str_validar)){
-			//if(str_validar==StrResultadoFinalizado) {
-				
-				resul_consulta=Consulta_Estado_Suscripcion();
-				
-				if(Consulta_Estado_Suscripcion()==true) {
-					System.out.println("validacion exitosa!!");
-				}else {
-					System.out.println("error generado durante la validacion en el home");
-				}
-				
-				System.out.println("validacion exitosa!!");
+			String StrResultadoFinalizado=GetValue("lbl_resultado").toString();	
+			
+			if(StrResultadoFinalizado.equals(str_validar)){			
+				//kpress.keyDown(waitFor(Str_resultado_finalizar), Keys.PAGE_DOWN).perform();
+				Serenity.takeScreenshot();
+				waitFor(StrMenuSd).click();
+				waitFor(StrSubMenuSd).click();	
+				waitFor(Str_home_prepago).click();			
+				waitFor(Str_input_numero_documento_home).sendKeys(GetValue("txt_num_doc").toString());
+				waitFor(Str_btn_buscar).click();							
 			}else {
 				System.out.println("error generado durante la validacion en el home");
+				waitFor(StrCerrarSesion).click();
 			}
-		}catch(Exception e) {		
-			waitFor(StrCerrarSesion).click();			
+		}catch(Exception e) {	
+			System.out.println(e);
+			waitFor(StrCerrarSesion).click();		
+			
 		}
 
 	}
+
+	public void Validar_mensaje_calificacion_suscriptor(String mensaje_calificacion,int tiempo_espera) {
+		// TODO Auto-generated method stub
+		try {
+			//System.out.println("Vaidar_mensaje_calificacion_suscriptor paso2: ");
+			String str_mensaje_calificar_suscriptor = waitFor(lbl_resultado_calificar_suscriptor).getText().toString();
+			
+			if(str_mensaje_calificar_suscriptor.equals("Usted Puede continuar con el proceso de captura de esta suscripción")) {
+				//System.out.println("paso 1");
+			}else {
+				//System.out.println("paso 2");
+				 throw new Exception();
+			}
+
+		}catch(Exception e) {
+			
+			try {
+				Thread.sleep(3000);
+				tiempo_espera=tiempo_espera-1;
+				if(tiempo_espera>=0) {
+					this.Validar_mensaje_calificacion_suscriptor(mensaje_calificacion,tiempo_espera);
+				}else {
+					waitFor(StrCerrarSesion).click();
+				}
+				
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				//System.out.println("Validar_mensaje_calificacion_suscriptor paso2: " + e1.toString());
+				waitFor(StrCerrarSesion).click();
+			}
+
+		}
+	}
+
+	public void validar_label_aprobado(String labe_aprobado,int tiempo_espera) {
+		// TODO Auto-generated method stub
+		try {
+			//System.out.println("Vaidar_mensaje_calificacion_suscriptor paso2: ");
+			String str_mensaje_calificar_suscriptor = waitFor(lbl_label_resultado_calificacion).getText().toString();
+			
+			if(str_mensaje_calificar_suscriptor.equals("APROBADO")) {
+				//System.out.println("paso 1");
+			}else {
+				//System.out.println("paso 2");
+				 throw new Exception();
+			}
+
+		}catch(Exception e) {
+			
+			try {
+				Thread.sleep(3000);
+				tiempo_espera=tiempo_espera-1;
+				if(tiempo_espera>=0) {
+					this.validar_label_aprobado(labe_aprobado,tiempo_espera);
+				}else {
+					waitFor(StrCerrarSesion).click();
+				}
+				
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				//System.out.println("Validar_mensaje_calificacion_suscriptor paso2: " + e1.toString());
+				waitFor(StrCerrarSesion).click();
+			}
+
+		}
+
+	}
+
 	
 	
 	

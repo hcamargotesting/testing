@@ -3,10 +3,10 @@ Feature: Title of your feature
   :: Venta prepago desde smart dealer ::
 
   @Venta_prepago_nuevo_smartdealer
-  Scenario Outline: Ingreso aplicativo smart dealer
-    Given Ingreso aplicativo smartdealer ventas prepago
-    And ingreso de usuario smartdealer <usuario>
-    And ingreso de contrasena usuario smartdealer <contrasena>
+  Scenario: Ingreso aplicativo smart dealer
+    Given Ingreso aplicativo smartdealer ventas prepago 
+    And ingreso de usuario smartdealer ""
+    And ingreso de contrasena usuario smartdealer ""
     And doy click en el boton aceptar
     And doy click al menu captura smartdealer
     And doy click en el sub menu Prepago ideal
@@ -18,6 +18,7 @@ Feature: Title of your feature
   	And escribo indicativo operador celular
   	And escribo numero de celular		
   	And doy click en calificar suscriptor
+  	And validar mensaje despues de calificar suscriptor "Usted Puede continuar con el proceso de captura de esta suscripción"
   	And escribo lugar de expedicion suscriptor
   	And escribo nombre suscriptor
   	And escribo apellido de suscriptor
@@ -45,20 +46,17 @@ Feature: Title of your feature
   	And selecciono barrio
   	And selecciono estrato
   	And doy click si tiene email
-  	#And doy click no tiene email
   	And escribo email
   	And escribo dominio email
-  	#And doy click en contrato fisico
   	And selecciono pago inicial
   	And selecciono pago mensual
   	And doy click en modalidad de pago
   	And doy click en oferta comercial
-   	And doy click en calificar suscriptor 	
+   	And doy click en calificar suscriptor
+   	And validar resultado de la calificacion "APROBADO" 	
   	And doy click en boton grabar ibs
   	And siguiente pantalla suscriptor  	
-  	And doy click en plan basico familia
-	  #And doy click en prepago favorito  			
-  			
+  	And doy click en plan basico familia			  			
   	And doy click en decodificador principal
 		And doy click en decodificador adicional
 		And escribo numero de contrato
@@ -71,27 +69,5 @@ Feature: Title of your feature
 		And doy click en el boton siguiente pantalla order instalacion
 		And doy click en finalizar pantalla resumen
 		And doy click aceptar finalizar agendamiento
-		And valido el resultado finalizado del mensaje
-		Then doy click cerrar sesion Prepago
-		
-	
-		#And consulto la suscripcion en la pantalla home prepago
-		
-    
-		
-    
-    Examples: 
-      | usuario  | contrasena | 
-      | "alemon" | "1"        |
-
-      # alemon
-      # angval
-      # LUAN
-      # omaech
-      # johsaa
-      # meroro
-      # roslon
-      # MAUMOR
-      # ERIGON
-      # angoro
-      # omaroz
+		And valido el resultado finalizado del mensaje  	
+  	Then doy click cerrar sesion Prepago
