@@ -3,6 +3,7 @@ Feature: Title of your feature
   :: Venta prepago desde smart dealer ::
 
   @Venta_prepago_nuevo_smartdealer
+    
   Scenario: Ingreso aplicativo smart dealer
     Given Ingreso aplicativo smartdealer ventas prepago 
     And ingreso de usuario smartdealer ""
@@ -71,3 +72,18 @@ Feature: Title of your feature
 		And doy click aceptar finalizar agendamiento
 		And valido el resultado finalizado del mensaje  	
   	Then doy click cerrar sesion Prepago
+  	
+
+              	
+  	
+  	  @ingreso_planet
+  Scenario Outline: Login Correcto
+    Given Ingreso a planet con la url correspondiente
+    And ingreso de usuario <usuario>
+    And ingreso de password <contrasena>
+    And doy click en botón Ingresar 
+    Then Ingreso al portal de planet
+    
+        Examples: 
+      | usuario  | contrasena | 
+      | "hcamargo" | "Danna*2011" |

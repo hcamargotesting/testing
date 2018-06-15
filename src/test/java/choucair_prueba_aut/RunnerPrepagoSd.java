@@ -11,11 +11,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-//@RunWith(CucumberWithSerenity.class)
+@RunWith(CucumberWithSerenity.class)
 //@CucumberOptions(features = "src/test/resources/features/SmartDealer/Login" , tags="@Venta_prepago_nuevo_smartdealer")
+@CucumberOptions(features = "src/test/resources/features/SmartDealer/Login" , tags="@Venta_prepago_nuevo_smartdealer_ambiente_uat")
 
 public class RunnerPrepagoSd {
-		
+/*
 	public Statement st=null;
 	public ResultSet rs = null;
 	public StringBuilder queryStrDriven = new StringBuilder();
@@ -83,7 +84,8 @@ public class RunnerPrepagoSd {
 	}
     
 	@RunWith(CucumberWithSerenity.class)
-    @CucumberOptions(features = "src/test/resources/features/SmartDealer/Login" , tags="@Venta_prepago_nuevo_smartdealer")
+    //@CucumberOptions(features = "src/test/resources/features/SmartDealer/Login" , tags="@Venta_prepago_nuevo_smartdealer")
+	@CucumberOptions(features = "src/test/resources/features/SmartDealer/Login" , tags="@Venta_prepago_nuevo_smartdealer_ambiente_uat")
     public class ejecutar_cucumber {    	
 
     }
@@ -107,7 +109,7 @@ public class RunnerPrepagoSd {
  
 	}
     
-
+*/
 
     
 }

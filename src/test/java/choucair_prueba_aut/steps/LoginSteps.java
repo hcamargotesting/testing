@@ -79,12 +79,12 @@ public class LoginSteps {
 
 	public void Seleccion_Punto_Venta_Smartdealer() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Select_Punto_de_Venta();
+		LoginPageObject.Select_Punto_de_Venta(12);
 	}
 
 	public void Seleccion_Tipo_Documento_Smartdealer() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Select_Tipo_documento();
+		LoginPageObject.Select_Tipo_documento(12);
 	}
 
 	public void Click_Calificar_Suscriptor() {
@@ -99,12 +99,12 @@ public class LoginSteps {
 
 	public void ClickBotonSiguienteVendedor() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Click_Boton_Siguiente_Vendedor();
+		LoginPageObject.Click_Boton_Siguiente_Vendedor(10);
 	}
 
 	public void Ingresar_Numero_Documento_suscriptor() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Input_Numero_Documento_suscriptor();
+		LoginPageObject.Input_Numero_Documento_suscriptor(12);
 	}
 
 	public void Ingresar_Lugar_Expedicion_suscriptor() {
@@ -249,12 +249,12 @@ public class LoginSteps {
 
 	public void Ingresar_Email() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Input_Email();
+		LoginPageObject.Input_Email(10);
 	}
 
 	public void Ingreso_Dominio_Email() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Input_Dominio_Email();
+		LoginPageObject.Input_Dominio_Email(10);
 	}
 
 	public void Seleccion_Pago_Inicial() {
@@ -279,17 +279,17 @@ public class LoginSteps {
 
 	public void Click_Boton_Calificar() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Click_Boton_Calificar();
+		LoginPageObject.Click_Boton_Calificar(10);
 	}
 
 	public void Click_Boton_Grabar_ibs() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Click_Boton_Grabar_Ibs();
+		LoginPageObject.Click_Boton_Grabar_Ibs(15);
 	}
 
 	public void Siguiente_Pantalla_Suscriptor() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Click_Siguiente_Pantalla_Suscriptor();
+		LoginPageObject.Click_Siguiente_Pantalla_Suscriptor(10);
 	}
 
 	public void Click_radio_button_plan_basico_familia() {
@@ -314,12 +314,12 @@ public class LoginSteps {
 
 	public void Ingresar_numero_contrato() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Ingresar_numero_contrato();
+		LoginPageObject.Ingresar_numero_contrato(10);
 	}
 
 	public void Ingresar_numero_verificacion() {
 		// TODO Auto-generated method stub
-		LoginPageObject.Ingresar_numero_verificacion();
+		LoginPageObject.Ingresar_numero_verificacion(10);	
 	}
 
 	public void Seleccion_modalidad_venta() {
@@ -374,7 +374,15 @@ public class LoginSteps {
 		// TODO Auto-generated method stub
 		LoginPageObject.validar_label_aprobado(labe_aprobado,10);
 	}
-	
 
-	
+	public void seleccionar_velocidad_net() {
+		// TODO Auto-generated method stub
+		LoginPageObject.seleccionar_velocidad_net(10);
+	}
+
+	public void utilizo_el_caso_de_prueba_prepago_numero_de_caso(String id_caso, String proceso_captura) {
+		// TODO Auto-generated method stub
+		LoginPageObject.utilizo_el_caso_de_prueba_prepago_numero_de_caso(id_caso,proceso_captura);
+	}
+
 }

@@ -585,4 +585,24 @@ public class LoginDefinition extends conexion_base_datos {
 	}
 	
 	
+	@Given("^doy click en velocidad internet$")
+	public void doy_click_en_velocidad_internet() throws Exception {
+	    // Write code here that turns the phrase above into concrete actions
+	    //hrow new PendingException();
+		LoginSteps.seleccionar_velocidad_net();
+	}
+
+//	@Given("^utilizo el caso de prueba prepago numero de caso \"([^\"]*)\" (.*)$")
+//	public void utilizo_el_caso_de_prueba_prepago_numero_de_caso(String id_caso, String proceso_captura) throws Exception {
+//	    // Write code here that turns the phrase above into concrete actions
+//	    //throw new PendingException();
+//		LoginSteps.utilizo_el_caso_de_prueba_prepago_numero_de_caso(id_caso,proceso_captura);
+//	}
+	
+	@Given("^utilizo el caso de prueba prepago numero de caso '(\\d+)' cliente_nuevo_prepago$")
+	public void utilizo_el_caso_de_prueba_prepago_numero_de_caso_cliente_nuevo_prepago(String id_caso) throws Exception {
+	    // Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
+		LoginSteps.utilizo_el_caso_de_prueba_prepago_numero_de_caso(id_caso,"cliente_nuevo_prepago");
+	}	
 }

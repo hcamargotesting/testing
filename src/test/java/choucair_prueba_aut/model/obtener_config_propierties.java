@@ -10,19 +10,26 @@ import java.sql.Statement;
 import java.sql.*;
 import choucair_prueba_aut.RunnerPrepagoSd;
 import choucair_prueba_aut.model.*;
+import choucair_prueba_aut.pageObjects.LoginPageObject;
 
 public class obtener_config_propierties  {
 	
 	public static String[] str_array_conexion_bd = new String[10];
 	public static HashMap<String, String> collection_test_case = new HashMap<>();
 	public static StringBuilder queryString = new StringBuilder();
+	public static StringBuilder queryStrDriven = new StringBuilder();
 	public static Connection conexion;
 	public static Connection conexion_smart_dealer;
+	public static Statement st=null;
+	public static ResultSet rs = null;
+
 	/* instancia clase runner*/
 	//RunnerPrepagoSd RunnerPrepagoSd;
 
 	public RunnerPrepagoSd obtener_clases = new RunnerPrepagoSd();
 	conexion_base_datos conectar_bd = new conexion_base_datos();
+	//LoginPageObject objectos_pageObject = new LoginPageObject();
+	LoginPageObject LoginPageObject;
 	
 	static Random random = new Random();
 	public static Statement st_crud=null;
@@ -89,7 +96,7 @@ public class obtener_config_propierties  {
 		    
 	    	//Actualiza numero contrato pagina programacion
 	    	int int_numero_contrato = Math.abs((111111111)+random.nextInt(99999999));
-	    	int int_numero_verificacion_contrato = Math.abs((111111111)+random.nextInt(99999999));	    	
+	    	int int_numero_verificacion_contrato = Math.abs((1)+random.nextInt(9));	    	
 	    	queryString.setLength(0);
 	    	queryString.append(" UPDATE WND_SD_PRE_OFERTA_PROGRAMACION_D SET TXT_NO_CONTRATO_1='" + int_numero_contrato + "',TXT_NO_CONTRATO_2='" + int_numero_verificacion_contrato + "'   WHERE ID_CASO='" + id_caso + "' ");
 	    	st_crud.executeUpdate(queryString.toString());  
@@ -108,7 +115,6 @@ public class obtener_config_propierties  {
 	public static void obtiene_barrio_sugerido(String ambiente,String tbl_suscriptor_robot,String ID_CASO,String ciudad,String departamento)  {
 		
 		try {
-			System.out.println("metodo obtiene_barrio_sugerido");
 			
 			ResultSet rs_smart_dealer = null;
 			Statement st_smart_dealer = null;
@@ -209,6 +215,102 @@ public class obtener_config_propierties  {
 		}
 		
 	}
+	
+	public void coleccion_datos_caso_de_prueba(String id_caso, String proceso_captura) {
+	
+	   	try {
+	   	   	
+	   		switch(proceso_captura.toLowerCase().toString()) {
+	   		
+	   		case "cliente_nuevo_prepago":
+	   			
+	   			conexion = conexion_base_datos.conexion_sql_server("conexion_bd_robot");
+				String nombre_columna="";
+				String valor_columna="";
+				queryStrDriven.setLength(0);
+				queryStrDriven.append(" SELECT intrg.TXT_NUM_DOC as documento_suscriptor,* FROM  WND_SD_PRE_CASOS_INTEGRALES_D intrg ");
+				queryStrDriven.append(" inner join UNI_LOGIN_SD_D login on login.ID_CASO=intrg.ID_CASO_LOGIN ");
+				queryStrDriven.append(" inner join WND_SD_PRE_INFORMACION_VENDEDOR_D vende on vende.ID_CASO= intrg.ID_CASO ");
+				queryStrDriven.append(" inner join WND_SD_PRE_INFORMACION_SUSCRIPTOR_D susc on susc.ID_CASO= intrg.ID_CASO ");
+				queryStrDriven.append(" inner join WND_SD_PRE_OFERTA_PROGRAMACION_D progrm on progrm.ID_CASO=intrg.ID_CASO ");
+				queryStrDriven.append(" inner join WND_SD_PRE_INFORMACION_PAGOS_D pagos on pagos.ID_CASO=intrg.ID_CASO ");
+				queryStrDriven.append(" inner join WND_SD_PRE_INFORMACION_ORDEN_SERVICIO_D ord_serv on ord_serv.ID_CASO=intrg.ID_CASO ");
+				queryStrDriven.append(" inner join WND_SD_PRE_INFORMACION_RESUMEN_D resumen on resumen.ID_CASO=intrg.ID_CASO ");
+				queryStrDriven.append(" WHERE intrg.ID_CASO='"+ id_caso +"' ");
+				queryStrDriven.append(" order by intrg.ID_CASO asc ");
+				st = conexion.createStatement();
+			    rs = st.executeQuery(queryStrDriven.toString());  
+
+				while (rs.next()) {
+					
+				    	choucair_prueba_aut.model.obtener_config_propierties.obtener_ciudad_instalacion(rs.getString("ID_CASO").toString(),rs.getString("ID_CASO_DIRECCION"));
+				    	choucair_prueba_aut.model.obtener_config_propierties.genera_datos_aleatorios_smartdealer(rs.getString("ID_CASO").toString());
+				    	choucair_prueba_aut.model.obtener_config_propierties.obtiene_barrio_sugerido(choucair_prueba_aut.pageObjects.LoginPageObject.str_ambiente_ejecucion.toString(),"WND_SD_PRE_INFORMACION_SUSCRIPTOR_D",rs.getString("ID_CASO").toString(),rs.getString("CMB_CIUDAD").toString(),rs.getString("DEPARTAMENTO").toString());
+				    	
+				    	collection_test_case.clear();
+				    	for (int i=1;i<=rs.getMetaData().getColumnCount();i++) {
+				    	  nombre_columna = rs.getMetaData().getColumnLabel(i).toLowerCase().toString();
+				    	  valor_columna=rs.getString(i);
+				    	  collection_test_case= (HashMap<String, String>) objeto_HashMap(nombre_columna, valor_columna);
+				    	}
+				    	 
+				 }
+				rs.close(); 
+				st.close();
+				conexion.close();
+
+				    
+	   			break;
+	   			
+	   		case "cliente_nuevo_pospago":
+	   			
+	   			break;
+
+	   			
+	   		}
+
+	   	}catch(Exception e) {
+	   		System.out.println("Error en el metodo coleccion_datos_caso_de_prueba: " + e.toString());
+	   	}    
+	}
+
+	public void crud (String conexion_robot,String cadena, String tipo_action ) {
+	
+		try {
+			
+			conexion = conexion_base_datos.conexion_sql_server(conexion_robot);
+	   		
+			switch(tipo_action.toLowerCase().toString()) {
+	   		
+	   		case "create":
+	   			break;
+	   			
+	   		case "read":	
+	   			break;
+	   		
+	   		case "update":
+	   			
+	   			st_crud = conexion.createStatement();
+	   			st_crud.executeUpdate(cadena);
+	   			st_crud.close();
+	   			conexion.close();
+	   			
+	   			break;
+	   			
+	   		case "delete":	
+	   			break;
+	   			
+	   			
+			}
+		
+		}catch(Exception e) {
+			
+		}
+	}
+	
+	
+	
+	
 	
 	
 }
