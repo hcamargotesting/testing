@@ -94,15 +94,6 @@ Feature: Title of your feature
 			|ID_CASO|TIPO_CAPTURA|
 			|'64'|cliente_nuevo_prepago|
 			|'71'|cliente_nuevo_prepago|
-			|'156'|cliente_nuevo_prepago|
-			|'241'|cliente_nuevo_prepago|
-			|'351'|cliente_nuevo_prepago|
-			|'352'|cliente_nuevo_prepago|
-			|'352'|cliente_nuevo_prepago|
-			|'358'|cliente_nuevo_prepago|
-			|'379'|cliente_nuevo_prepago|
-			|'380'|cliente_nuevo_prepago|
-			|'381'|cliente_nuevo_prepago|
 
 
 
